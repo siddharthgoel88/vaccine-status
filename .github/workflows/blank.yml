@@ -25,27 +25,21 @@ jobs:
       - name: Set Variables
         uses: allenevans/set-env@v2.0.0
         with:
-          OVPN: ${{ secrets.OVPN}}
-          VPN_USER: ${{ secrets.VPN_USER }}
-          VPN_SECRET: ${{ secrets.VPN_SECRET }}
-      - name: Write VPN Files
-        run: |
-          mkdir -p .github/vpn/
-          echo "$OVPN" > .github/vpn/vpn.ovpn
+          EVPN_ACT_CODE: ${{ secrets.EVPN_ACT_CODE}}
 
-      - name: Install Open VPN
+      - name: Install Express VPN
         run: |
-          sudo apt install apt-transport-https
-          sudo wget https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub
-          sudo apt-key add openvpn-repo-pkg-key.pub
-          sudo wget -O /etc/apt/sources.list.d/openvpn3.list https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-bionic.list
-          sudo apt update
-          sudo apt install openvpn3
+          sudo wget https://www.expressvpn.works/clients/linux/expressvpn_3.7.0.29-1_amd64.deb
+          sudo dpkg -i expressvpn_3.7.0.29-1_amd64.deb
 
-      - name: Start Open VPN 3
+      - name: Start Express VPN
         run: |
-          echo "user:$VPN_USER"
-          { echo $VPN_USER ; echo $VPN_SECRET ; } | openvpn3 session-start --config .github/vpn/vpn.ovpn
+          { echo $EVPN_ACT_CODE ; echo "N" ; } | expressvpn activate
+          expressvpn connect "India"
+
+      - name: Confirm IP location
+        run: |
+          curl ipinfo.io
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
