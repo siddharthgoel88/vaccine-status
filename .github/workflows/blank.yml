@@ -41,7 +41,9 @@ jobs:
           send "$EVPN_ACT_CODE\r"
           expect "Activated"
           EOD
+          expressvpn preferences set network_lock off
           expressvpn connect "India"
+          expressvpn status
 
       - name: Confirm IP location
         run: |
