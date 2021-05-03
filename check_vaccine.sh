@@ -31,6 +31,6 @@ do
    if (( ${#sorted_unique_result[@]} )); then
         echo "Vaccine slots available at ${#sorted_unique_result[@]} centres on $NEXT_DATE"
         printf '%s\n' "${sorted_unique_result[@]}"
-    fi
+   fi
 
 done
