@@ -7,8 +7,11 @@ MIN_AGE=45
 
 for i in {0..13}
 do
-    DAYS="${i}d"
-    NEXT_DATE=$(date -j -v +$DAYS -f "%d-%m-%Y" "$START_DATE" +%d-%m-%Y)
+    # DAYS="${i}d"
+    # NEXT_DATE=$(date -j -v +$DAYS -f "%d-%m-%Y" "$START_DATE" +%d-%m-%Y)
+
+    NEXT_DATE=$(date +%d-%m-%Y -d "$DATE + $i day")
+
     echo "Checking for date : $NEXT_DATE"
     output_file="result_${NEXT_DATE}_min-age_${MIN_AGE}.csv"
     echo "HOSPITAL_NAME, PINCODE, AVAILABLE_CAPACITY" > $output_file

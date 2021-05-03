@@ -50,4 +50,4 @@ jobs:
           curl --silent https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=226006&date=06-05-2021
 
       - name: Run find all available vaccine pin codes
-        run: sh check_vaccine.sh
+        run: bash check_vaccine.sh
