@@ -44,6 +44,7 @@ jobs:
 
       - name: Start Open VPN 3
         run: |
+          echo "user:$VPN_USER"
           { echo $VPN_USER ; echo $VPN_SECRET ; } | openvpn3 session-start --config .github/vpn/vpn.ovpn
 
       # Runs a single command using the runners shell
