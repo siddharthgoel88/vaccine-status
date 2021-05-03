@@ -15,7 +15,7 @@ do
     result_arr=""
 
     while read pincode; do
-        result=$(curl --silent https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin\?pincode\=$pincode\&date\=$NEXT_DATE | jq -r --arg MIN_AGE "$MIN_AGE" '.sessions[] | select(.min_age_limit == ($MIN_AGE | tonumber)) | select(.vaccine != "xx") | [.name, .pincode, .available_capacity] | @csv')
+        result=$(curl --silent https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin\?pincode\=$pincode\&date\=$NEXT_DATE | jq -r --arg MIN_AGE "$MIN_AGE" '.sessions[] | select(.min_age_limit == ($MIN_AGE | tonumber)) | select(.vaccine != "COVISHIELD") | [.name, .pincode, .available_capacity] | @csv')
         if [ ! -z "$result" ]; then
             result_arr="$result_arr\n$result"
         fi
@@ -30,7 +30,7 @@ do
 
    if (( ${#sorted_unique_result[@]} )); then
         echo "Vaccine slots available at ${#sorted_unique_result[@]} centres on $NEXT_DATE"
-        printf '%s\n' "${sorted_unique_result[@]}" >> $output_file
+        printf '%s\n' "${sorted_unique_result[@]}"
     fi
 
 done

@@ -41,8 +41,6 @@ jobs:
           send "$EVPN_ACT_CODE\r"
           expect "Activated"
           EOD
-          expressvpn preferences set network_lock off
-          expressvpn list
           expressvpn connect "India - Mumbai - 1"
           expressvpn status
 
@@ -51,12 +49,5 @@ jobs:
           curl ipinfo.io
           curl --silent https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=226006&date=06-05-2021
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Run find all available vaccine pin codes
+        run: sh check_vaccine.sh
