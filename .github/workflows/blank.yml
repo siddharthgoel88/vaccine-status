@@ -34,6 +34,7 @@ jobs:
 
       - name: Start Express VPN
         run: |
+          sudo apt-get install expect
           /usr/bin/expect <<EOD
           spawn expressvpn activate 
           expect "Enter activation code: "
