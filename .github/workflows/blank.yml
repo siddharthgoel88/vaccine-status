@@ -34,7 +34,12 @@ jobs:
 
       - name: Start Express VPN
         run: |
-          { echo $EVPN_ACT_CODE ; echo "N" ; } | expressvpn activate
+          /usr/bin/expect <<EOD
+          spawn expressvpn activate 
+          expect "Enter activation code: "
+          send "$EVPN_ACT_CODE\r"
+          expect "Activated"
+          EOD
           expressvpn connect "India"
 
       - name: Confirm IP location
