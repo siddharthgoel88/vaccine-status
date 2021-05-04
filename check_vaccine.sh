@@ -36,7 +36,7 @@ do
     sorted_unique_result=$(cat $output_file | sort -u | uniq)
 
    if [ ! -z "$sorted_unique_result" ]; then
-        sed "1s/^/$header\n/" $output_file
+        sed -i "1s/^/$header\n/" $output_file
         body=$( cat $output_file )
 
         # printing on console        
