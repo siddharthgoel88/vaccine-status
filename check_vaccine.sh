@@ -2,8 +2,8 @@
 
 pincode_file='lucknow-pincode.txt'
 START_DATE=04-05-2021
-# MIN_AGE=18
-MIN_AGE=45
+MIN_AGE=18
+# MIN_AGE=45
 ZIP_FILE="vaccination-centres.zip"
 OUTPUT_DIR="./results"
 
@@ -11,7 +11,7 @@ rm $ZIP_FILE 2> /dev/null
 rm -rf $OUTPUT_DIR 2> /dev/null
 mkdir -p $OUTPUT_DIR
 
-for i in {0..0}
+for i in {0..13}
 do
     if [[ "$OSTYPE" == "darwin"* ]]; then
         DAYS="${i}d"
