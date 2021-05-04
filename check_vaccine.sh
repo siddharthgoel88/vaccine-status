@@ -49,6 +49,11 @@ do
 
 done
 
+if [ $( ls $OUTPUT_DIR/ | wc -l ) -eq 0 ]; then
+    echo "No available slot found"
+    exit 0
+fi
+
 # trigger email
 echo "Triggering email ...."
 
