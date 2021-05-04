@@ -60,7 +60,7 @@ echo "Triggering email ...."
 zip $ZIP_FILE $OUTPUT_DIR/*
 base64_encoded_data=$( base64 $ZIP_FILE )
 
-printf -v data '{"personalizations": [{"to": [{"email": "siddharth98391@gmail.com"}, {"email": "alokdutt@safearth.in"}]}],"from": {"email": "lko-vaccination-alert@vaccine-baba.com"},"subject":"Vaccination slots available in Lucknow","content": [{"type": "text/html","value": "Hey buddy,<br><br>Please find attached the details of vaccine availability at different centres in Lucknow.<br> Stay safe, stay vaccinated.<br><br>Cheers,<br>Vaccine Baba"}], "attachments": [{"content": "%s", "type": "text/plain", "filename": "%s"}]}' "$base64_encoded_data" "$ZIP_FILE"
+printf -v data '{"personalizations": [{"to": [{"email": "siddharth98391@gmail.com"}, {"email": "alokdutt@safearth.in"},{"email": "akshatsrivastava.lko@gmail.com"}]}],"from": {"email": "lko-vaccination-alert@vaccine-baba.com"},"subject":"Vaccination slots available in Lucknow","content": [{"type": "text/html","value": "Hey buddy,<br><br>Please find attached the details of vaccine availability at different centres in Lucknow.<br> Stay safe, stay vaccinated.<br><br>Cheers,<br>Vaccine Baba"}], "attachments": [{"content": "%s", "type": "text/plain", "filename": "%s"}]}' "$base64_encoded_data" "$ZIP_FILE"
 
 echo "$data" > request.json
 
