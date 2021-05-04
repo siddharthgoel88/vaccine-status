@@ -26,6 +26,7 @@ jobs:
         uses: allenevans/set-env@v2.0.0
         with:
           EVPN_ACT_CODE: ${{ secrets.EVPN_ACT_CODE}}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
 
       - name: Install Express VPN
         run: |
