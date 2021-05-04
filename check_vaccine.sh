@@ -11,7 +11,7 @@ rm $ZIP_FILE 2> /dev/null
 rm -rf $OUTPUT_DIR 2> /dev/null
 mkdir -p $OUTPUT_DIR
 
-for i in {0..2}
+for i in {0..0}
 do
     if [[ "$OSTYPE" == "darwin"* ]]; then
         DAYS="${i}d"
