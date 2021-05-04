@@ -57,10 +57,14 @@ base64_encoded_data=$( base64 $ZIP_FILE )
 
 printf -v data '{"personalizations": [{"to": [{"email": "siddharth98391@gmail.com"}]}],"from": {"email": "lko-vaccination-alert@vaccine-baba.com"},"subject":"Vaccination slots available in Lucknow","content": [{"type": "text/html","value": "Hey buddy,<br><br>Please find attached the details of vaccine availability at different centres in Lucknow.<br> Stay safe, stay vaccinated.<br><br>Cheers,<br>Vaccine Baba"}], "attachments": [{"content": "%s", "type": "text/plain", "filename": "%s"}]}' "$base64_encoded_data" "$ZIP_FILE"
 
+echo "$data" > request.json
+
 curl --request POST \
   --url https://api.sendgrid.com/v3/mail/send \
   --header "authorization: Bearer $SENDGRID_API_KEY" \
   --header 'Content-Type: application/json' \
-  --data "$data"
+  --data @request.json
+
+rm request.json
 
 echo "Sent email"
