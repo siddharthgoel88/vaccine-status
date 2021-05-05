@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pincode_file='lucknow-pincode.txt'
-START_DATE=05-05-2021
+START_DATE=06-05-2021
 MIN_AGE=18
 # MIN_AGE=45
 ZIP_FILE="vaccination-centres.zip"
