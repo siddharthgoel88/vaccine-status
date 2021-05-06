@@ -17,22 +17,40 @@ package cmd
 
 import (
 	"fmt"
-
+	"github.com/prometheus/common/log"
 	"github.com/spf13/cobra"
+	"strconv"
 )
 
 // byDistrictCmd represents the byDistrict command
 var byDistrictCmd = &cobra.Command{
 	Use:   "byDistrict",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Give the district id here",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("byDistrict called")
+		var districtId int
+
+		// checking the number of arguments
+		if len(args) != 1 {
+			log.Error("pass district id as an argument")
+			return
+		}
+
+		// checking district id is integer
+		districtId, err := strconv.Atoi(args[0]);
+		if err != nil {
+			log.Error("district id must be an integer")
+			return
+		}
+
+		file, err := GetSlotsByDistrict(districtId)
+		if err != nil {
+			log.Errorf("issue in HTTP request, err = %v", err)
+			return
+		}
+
+		if file != nil {
+			fmt.Printf("%s", file.Name())
+		}
 	},
 }
 
