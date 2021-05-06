@@ -1,9 +1,5 @@
 #!/bin/bash
 
-pincode_file='lucknow-pincode.txt'
-START_DATE=06-05-2021
-MIN_AGE=18
-# MIN_AGE=45
 ZIP_FILE="vaccination-centres.zip"
 OUTPUT_DIR="./results"
 
@@ -11,42 +7,17 @@ rm $ZIP_FILE 2> /dev/null
 rm -rf $OUTPUT_DIR 2> /dev/null
 mkdir -p $OUTPUT_DIR
 
-for i in {0..7}
+# Lucknow, Ranchi, Kolkata
+districts=( 670 240 725 )
+
+for district in ${districts[@]}
 do
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        DAYS="${i}d"
-        NEXT_DATE=$(date -j -v +$DAYS -f "%d-%m-%Y" "$START_DATE" +%d-%m-%Y)
-    else
-        NEXT_DATE=$(date +%d-%m-%Y -d "$DATE + $i day")
-    fi
-
-    echo "Checking for date : $NEXT_DATE"
-    output_file="$OUTPUT_DIR/result_${NEXT_DATE}_min-age_${MIN_AGE}.csv"
-    header="HOSPITAL_NAME, PINCODE, AVAILABLE_CAPACITY, VACCINE_NAME"
-
-    echo "" > $output_file
-
-    while read pincode; do
-        result=$(curl --silent https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin\?pincode\=$pincode\&date\=$NEXT_DATE | jq -r --arg MIN_AGE "$MIN_AGE" '.sessions[] | select(.min_age_limit == ($MIN_AGE | tonumber)) | [.name, .pincode, .available_capacity, .vaccine] | @csv')
-        if [ ! -z "$result" ]; then
-            echo "$result" >> $output_file
-        fi
-    done < $pincode_file
-
-    sorted_unique_result=$(cat $output_file | sort -u | uniq)
-
-   if [ ! -z "$sorted_unique_result" ]; then
-        sed -i "1s/^/$header\n/" $output_file
-        body=$( cat $output_file )
-
-        # printing on console        
-        echo $subject
-        echo "$body"
-        echo ""
-   else
-        rm $output_file
+   echo "Checking for district id $district"
+   csvfile=$(./vaccine-status byDistrict $district)
+   if [ -f "$csvfile" ]; then
+      echo "$csvfile"
+      mv "$csvfile" "$OUTPUT_DIR/$district.csv"
    fi
-
 done
 
 if [ $( ls $OUTPUT_DIR/ | wc -l ) -eq 0 ]; then
