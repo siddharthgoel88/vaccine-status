@@ -20,7 +20,14 @@ import (
 	"github.com/prometheus/common/log"
 	"github.com/spf13/cobra"
 	"strconv"
+	"time"
 )
+
+const (
+	MAX_RUNTIME = 82000
+	SLEEP_SECONDS = 15
+)
+
 
 // byDistrictCmd represents the byDistrict command
 var byDistrictCmd = &cobra.Command{
@@ -42,15 +49,23 @@ var byDistrictCmd = &cobra.Command{
 			return
 		}
 
-		file, err := GetSlotsByDistrict(districtId)
-		if err != nil {
-			log.Errorf("issue in HTTP request, err = %v", err)
-			return
+		runTime := 0
+
+		for runTime < MAX_RUNTIME {
+			file, err := GetSlotsByDistrict(districtId)
+			if err != nil {
+				log.Errorf("issue in HTTP request, err = %v", err)
+			}
+
+			if file != nil {
+				fmt.Printf("%s", file.Name())
+				break
+			}
+
+			time.Sleep(SLEEP_SECONDS * time.Second)
+			runTime += SLEEP_SECONDS
 		}
 
-		if file != nil {
-			fmt.Printf("%s", file.Name())
-		}
 	},
 }
 
