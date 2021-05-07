@@ -10,14 +10,24 @@ mkdir -p $OUTPUT_DIR
 # Lucknow, Ranchi, Kolkata
 districts=( 670 240 725 )
 
-for district in "${districts[@]}"
-do
-   echo "Checking for district id $district"
-   csvfile=$(./vaccine-status byDistrict $district)
-   if [ -f "$csvfile" ]; then
-      echo "$csvfile"
-      mv "$csvfile" "$OUTPUT_DIR/$district.csv"
-   fi
+time_elapsed=0
+max_run_sec=82000
+sleep_time=15
+
+while [ $time_elapsed -lt $max_run_sec ]; do
+  for district in "${districts[@]}"
+  do
+     echo "Checking for district id $district"
+     csvfile=$(./vaccine-status byDistrict "$district")
+     if [ -f "$csvfile" ]; then
+        echo "$csvfile"
+        mv "$csvfile" "$OUTPUT_DIR/$district.csv"
+     fi
+  done
+  echo "Sleeping for $sleep_time seconds ..."
+  sleep $sleep_time
+  time_elapsed=$(( time_elapsed + sleep_time ))
+  echo "time elapsed $time_elapsed"
 done
 
 if [ "$( ls $OUTPUT_DIR/ | wc -l )" -eq 0 ]; then

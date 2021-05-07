@@ -32,8 +32,6 @@ func GetSlotsByDistrict(districtId int) (*os.File, error) {
 		return nil, err
 	}
 
-
-
 	values := make([][]string, 0)
 	header := []string{"Center Name", "District", "Pincode", "Session Date", "Availability", "Min Age Limit", "Vaccine"}
 	values = append(values, header)
