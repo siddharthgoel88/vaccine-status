@@ -11,7 +11,7 @@ mkdir -p $OUTPUT_DIR
 districts=( 670 240 725 )
 
 time_elapsed=0
-max_run_sec=82000
+max_run_sec=86400
 sleep_time=15
 
 while [ $time_elapsed -lt $max_run_sec ]; do
