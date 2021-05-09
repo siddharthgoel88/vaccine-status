@@ -63,8 +63,8 @@ var byDistrictCmd = &cobra.Command{
 			}
 
 			for _, districtId := range districtIds {
-				log.Info("sleeping for 3 seconds before next call")
-				time.Sleep(3 * time.Second)
+				log.Info("sleeping for 5 seconds before next call")
+				time.Sleep(5 * time.Second)
 
 				if _, ok := alertedIds[districtId]; ok {
 					continue
