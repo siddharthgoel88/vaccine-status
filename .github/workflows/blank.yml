@@ -5,7 +5,7 @@ name: CI
 # Controls when the action will run. 
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 */3 * * *"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -29,6 +29,9 @@ jobs:
         with:
           EVPN_ACT_CODE: ${{ secrets.EVPN_ACT_CODE}}
           SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          email_670: ${{ secrets.email_670 }}
+          email_240: ${{ secrets.email_240 }}
+          email_725: ${{ secrets.email_725 }}
 
       - name: Install Express VPN
         run: |
@@ -53,3 +56,11 @@ jobs:
 
       - name: Find all available slots for vaccination
         run: bash check_vaccine.sh
+
+  cancel:
+    name: auto-cancellation-running-action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: fauguste/auto-cancellation-running-action@0.1.4
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
