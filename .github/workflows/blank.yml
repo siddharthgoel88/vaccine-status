@@ -11,7 +11,15 @@ on:
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:   
+jobs:
+  cancel:
+    name: auto-cancellation-running-action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: fauguste/auto-cancellation-running-action@0.1.4
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
@@ -56,11 +64,3 @@ jobs:
 
       - name: Find all available slots for vaccination
         run: bash check_vaccine.sh
-
-  cancel:
-    name: auto-cancellation-running-action
-    runs-on: ubuntu-latest
-    steps:
-      - uses: fauguste/auto-cancellation-running-action@0.1.4
-        with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
