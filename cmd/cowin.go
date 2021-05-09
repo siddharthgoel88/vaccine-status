@@ -18,6 +18,8 @@ const (
 )
 
 func GetSlotsByDistrict(districtId int) (*os.File, error) {
+	log.Infof("Checking for slots %d\n", districtId)
+
 	loc, _ := time.LoadLocation("Asia/Kolkata")
 	now := time.Now().In(loc)
 	firstWeek := now.Format("02-01-2006")
@@ -40,7 +42,7 @@ func GetSlotsByDistrict(districtId int) (*os.File, error) {
 		for _, session := range centre.Sessions {
 			if session.AvailableCapacity != 0 && session.MinAgeLimit == 18 {
 				value := []string{centre.Name, centre.DistrictName, strconv.Itoa(centre.Pincode),
-					session.Date, fmt.Sprintf("%f",session.AvailableCapacity),
+					session.Date, fmt.Sprintf("%d",int64(session.AvailableCapacity)),
 					strconv.Itoa(session.MinAgeLimit), session.Vaccine}
 				values = append(values, value)
 			}
@@ -51,7 +53,7 @@ func GetSlotsByDistrict(districtId int) (*os.File, error) {
 		for _, session := range centre.Sessions {
 			if session.AvailableCapacity != 0 && session.MinAgeLimit == 18 {
 				value := []string{centre.Name, centre.DistrictName, strconv.Itoa(centre.Pincode),
-					session.Date, fmt.Sprintf("%f",session.AvailableCapacity),
+					session.Date, fmt.Sprintf("%d",int64(session.AvailableCapacity)),
 					strconv.Itoa(session.MinAgeLimit), session.Vaccine}
 				values = append(values, value)
 			}
@@ -62,7 +64,7 @@ func GetSlotsByDistrict(districtId int) (*os.File, error) {
 		return nil, nil
 	}
 
-	outputFile, err := os.Create("result.csv")
+	outputFile, err := os.Create(fmt.Sprintf("result-%d.csv", districtId))
 	if err != nil {
 		// handle error
 	}
