@@ -54,7 +54,7 @@ var byDistrictCmd = &cobra.Command{
 			districtIds = append(districtIds, districtId)
 		}
 
-		alertedIds := make(map[int]bool)
+		alertedIds := make(map[int]time.Time)
 
 		for true {
 
@@ -63,8 +63,12 @@ var byDistrictCmd = &cobra.Command{
 			}
 
 			for _, districtId := range districtIds {
-				if _, ok := alertedIds[districtId]; ok {
-					continue
+				if startTime, ok := alertedIds[districtId]; ok {
+					if time.Now().Sub(startTime).Seconds() < 60 * 60 {
+						log.Infof("skipping alerts for district %d", districtId)
+						continue
+					}
+					delete(alertedIds, districtId)
 				}
 
 				log.Info("sleeping for 5 seconds before next call")
@@ -82,7 +86,7 @@ var byDistrictCmd = &cobra.Command{
 				}
 
 				log.Infof("Found available slots for district %d", districtId)
-				alertedIds[districtId] = true
+				alertedIds[districtId] = time.Now()
 
 				// alerting via Email
 				from := mail.NewEmail("Vaccine Baba", "no-reply@vaccine-baba.com")
