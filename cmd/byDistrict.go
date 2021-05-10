@@ -142,8 +142,9 @@ func getBase64EncodedData(fileName string) (string,error) {
 }
 
 func getEmailList(districtId int) []*mail.Email {
-	emails, exists := os.LookupEnv(fmt.Sprintf("email_%d", districtId))
+	emails, exists := os.LookupEnv(fmt.Sprintf("EMAIL_%d", districtId))
 	if !exists {
+		log.Errorf("no value set in EMAIL_%d", districtId)
 		return []*mail.Email{}
 	}
 
