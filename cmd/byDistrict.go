@@ -63,12 +63,12 @@ var byDistrictCmd = &cobra.Command{
 			}
 
 			for _, districtId := range districtIds {
-				log.Info("sleeping for 5 seconds before next call")
-				time.Sleep(5 * time.Second)
-
 				if _, ok := alertedIds[districtId]; ok {
 					continue
 				}
+
+				log.Info("sleeping for 5 seconds before next call")
+				time.Sleep(5 * time.Second)
 
 				file, err := GetSlotsByDistrict(districtId)
 				if err != nil {
