@@ -37,9 +37,10 @@ jobs:
         with:
           EVPN_ACT_CODE: ${{ secrets.EVPN_ACT_CODE}}
           SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-          email_670: ${{ secrets.email_670 }}
-          email_240: ${{ secrets.email_240 }}
-          email_725: ${{ secrets.email_725 }}
+          email_670: ${{ secrets.email_670 }} #Lucknow
+          email_240: ${{ secrets.email_240 }} #Ranchi
+          email_725: ${{ secrets.email_725 }} #Kolkata
+          email_650: ${{ secrets.email_650 }} #GautamBudh Nagar
 
       - name: Install Express VPN
         run: |
