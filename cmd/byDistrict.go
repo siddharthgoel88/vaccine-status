@@ -64,7 +64,7 @@ var byDistrictCmd = &cobra.Command{
 
 			for _, districtId := range districtIds {
 				if startTime, ok := alertedIds[districtId]; ok {
-					if time.Now().Sub(startTime).Seconds() < 60 {
+					if time.Now().Sub(startTime).Seconds() < 15 * 60 {
 						log.Infof("skipping alerts for district %d", districtId)
 						continue
 					}
