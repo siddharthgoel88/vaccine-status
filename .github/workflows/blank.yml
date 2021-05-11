@@ -5,7 +5,7 @@ name: CI
 # Controls when the action will run. 
 on:
   schedule:
-    - cron: "0 */3 * * *"
+    - cron: "0 */6 * * *"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -38,7 +38,6 @@ jobs:
           EVPN_ACT_CODE: ${{ secrets.EVPN_ACT_CODE}}
           SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
           email_670: ${{ secrets.email_670 }} #Lucknow
-          email_240: ${{ secrets.email_240 }} #Ranchi
           email_725: ${{ secrets.email_725 }} #Kolkata
           email_650: ${{ secrets.email_650 }} #GautamBudh Nagar
 
