@@ -40,7 +40,7 @@ func GetSlotsByDistrict(districtId int) (*os.File, error) {
 
 	for _, centre := range calendarByDistrictFirstWeek.Centers {
 		for _, session := range centre.Sessions {
-			if session.AvailableCapacity != 0 && session.MinAgeLimit == 18 {
+			if session.AvailableCapacity > 1 && session.MinAgeLimit == 18 {
 				value := []string{centre.Name, centre.DistrictName, strconv.Itoa(centre.Pincode),
 					session.Date, fmt.Sprintf("%d",int64(session.AvailableCapacity)),
 					strconv.Itoa(session.MinAgeLimit), session.Vaccine}
@@ -51,7 +51,7 @@ func GetSlotsByDistrict(districtId int) (*os.File, error) {
 
 	for _, centre := range calendarByDistrictSecondWeek.Centers {
 		for _, session := range centre.Sessions {
-			if session.AvailableCapacity != 0 && session.MinAgeLimit == 18 {
+			if session.AvailableCapacity > 1 && session.MinAgeLimit == 18 {
 				value := []string{centre.Name, centre.DistrictName, strconv.Itoa(centre.Pincode),
 					session.Date, fmt.Sprintf("%d",int64(session.AvailableCapacity)),
 					strconv.Itoa(session.MinAgeLimit), session.Vaccine}
