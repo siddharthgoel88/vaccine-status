@@ -20,7 +20,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/prometheus/common/log"
-	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 	"github.com/spf13/cobra"
 	"io/ioutil"
@@ -50,83 +49,78 @@ var byDistrictCmd = &cobra.Command{
 				log.Error("district [%v] id must be an integer", arg)
 				return
 			}
-
 			districtIds = append(districtIds, districtId)
 		}
 
-		alertedIds := make(map[int]time.Time)
+		//alertedIds := make(map[int]time.Time)
 
 		for true {
 
-			if len(alertedIds) == len(districtIds) {
-				break
-			}
+			//if len(alertedIds) == len(districtIds) {
+			//	break
+			//}
 
 			for _, districtId := range districtIds {
-				if startTime, ok := alertedIds[districtId]; ok {
-					if time.Now().Sub(startTime).Seconds() < 15 * 60 {
-						log.Infof("skipping alerts for district %d", districtId)
-						continue
-					}
-					delete(alertedIds, districtId)
-				}
+				//if startTime, ok := alertedIds[districtId]; ok {
+				//	if time.Now().Sub(startTime).Seconds() < 15 * 60 {
+				//		log.Infof("skipping alerts for district %d", districtId)
+				//		continue
+				//	}
+				//	delete(alertedIds, districtId)
+				//}
 
-				log.Info("sleeping for 5 seconds before next call")
-				time.Sleep(5 * time.Second)
+				log.Info("sleeping for 3 seconds before next call")
+				time.Sleep(3 * time.Second)
 
-				file, err := GetSlotsByDistrict(districtId)
-				if err != nil {
-					log.Errorf("issue in HTTP request, err = %v", err)
-					continue
-				}
+				GetSlotsByDistrict(districtId)
 
-				if file == nil {
-					log.Infof("No available slot found for district %d", districtId)
-					continue
-				}
-
-				log.Infof("Found available slots for district %d", districtId)
-				alertedIds[districtId] = time.Now()
-
-				// alerting via Email
-				from := mail.NewEmail("Vaccine Baba", "no-reply@vaccine-baba.com")
-				to := mail.NewEmail("Vaccine Kaka", "kaka@vaccine-baba.com")
-				tos := []*mail.Email{to}
-				subject := fmt.Sprintf("Vaccination slot for District %d", districtId)
-				htmlContent := fmt.Sprintf("Hey buddy,<br><br>You are getting this email " +
-					"since you have subscribed to vaccination alert in district %d. This email " +
-					"contains list of available slots at one or more of the subscribed " +
-					"locations. Check the mail attachment. <br> Stay safe, stay vaccinated." +
-					"<br><br>Cheers,<br>Vaccine Baba", districtId)
-				content := mail.NewContent("text/html", htmlContent)
-
-				attachment := mail.NewAttachment()
-				attachment.SetType("text/csv")
-				attachment.SetFilename(file.Name())
-				b64, err := getBase64EncodedData(file.Name())
-				if err != nil {
-					log.Errorf("%v", err)
-					continue
-				}
-				attachment.SetContent(b64)
-
-				m := mail.NewV3MailInit(from, subject, to, content)
-				m.AddAttachment(attachment)
-
-				p := mail.NewPersonalization()
-				p.AddTos(tos...)
-				p.AddBCCs(getEmailList(districtId)...)
-				m.AddPersonalizations(p)
-
-				client := sendgrid.NewSendClient(os.Getenv("SENDGRID_API_KEY"))
-				response, err := client.Send(m)
-				if err != nil {
-					log.Errorf("%v", err)
-				} else {
-					fmt.Println(response.StatusCode)
-					fmt.Println(response.Body)
-					fmt.Println(response.Headers)
-				}
+				//if file == nil {
+				//	log.Infof("No available slot found for district %d", districtId)
+				//	continue
+				//}
+				//
+				//log.Infof("Found available slots for district %d", districtId)
+				//alertedIds[districtId] = time.Now()
+				//
+				//// alerting via Email
+				//from := mail.NewEmail("Vaccine Baba", "no-reply@vaccine-baba.com")
+				//to := mail.NewEmail("Vaccine Kaka", "kaka@vaccine-baba.com")
+				//tos := []*mail.Email{to}
+				//subject := fmt.Sprintf("Vaccination slot for District %d", districtId)
+				//htmlContent := fmt.Sprintf("Hey buddy,<br><br>You are getting this email " +
+				//	"since you have subscribed to vaccination alert in district %d. This email " +
+				//	"contains list of available slots at one or more of the subscribed " +
+				//	"locations. Check the mail attachment. <br> Stay safe, stay vaccinated." +
+				//	"<br><br>Cheers,<br>Vaccine Baba", districtId)
+				//content := mail.NewContent("text/html", htmlContent)
+				//
+				//attachment := mail.NewAttachment()
+				//attachment.SetType("text/csv")
+				//attachment.SetFilename(file.Name())
+				//b64, err := getBase64EncodedData(file.Name())
+				//if err != nil {
+				//	log.Errorf("%v", err)
+				//	continue
+				//}
+				//attachment.SetContent(b64)
+				//
+				//m := mail.NewV3MailInit(from, subject, to, content)
+				//m.AddAttachment(attachment)
+				//
+				//p := mail.NewPersonalization()
+				//p.AddTos(tos...)
+				//p.AddBCCs(getEmailList(districtId)...)
+				//m.AddPersonalizations(p)
+				//
+				//client := sendgrid.NewSendClient(os.Getenv("SENDGRID_API_KEY"))
+				//response, err := client.Send(m)
+				//if err != nil {
+				//	log.Errorf("%v", err)
+				//} else {
+				//	fmt.Println(response.StatusCode)
+				//	fmt.Println(response.Body)
+				//	fmt.Println(response.Headers)
+				//}
 			}
 		}
 	},
