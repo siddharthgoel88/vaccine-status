@@ -1,6 +1,6 @@
 #!/bin/bash
 
 # Lucknow, Kolkata
-./vaccine-status byDistrict 670 725
+./vaccine-status byDistrict 670
 
 
